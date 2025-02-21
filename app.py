@@ -6,13 +6,22 @@ from tensorflow.keras.models import load_model
 import matplotlib.pyplot as plt
 import time
 import gdown
+import os
 
 # Google Drive file ID
 file_id = "1szyaLTqUuLXU6a6mgwxYZYn9Qo54q9GB"
 output = "chest_xray.h5"
 
-# Download the model from Google Drive
-gdown.download(f"https://drive.google.com/uc?id={file_id}", output, quiet=False)
+# Download the model from Google Drive only if it doesn't exist
+if not os.path.exists(output):
+    try:
+        url = f"https://drive.google.com/uc?export=download&id={file_id}"
+        gdown.download(url, output, quiet=False)
+    except Exception as e:
+        st.error(f"Failed to download model. Error: {e}")
+        st.warning("If the download fails, manually download the model from the link below and place it in the same folder as this script.")
+        st.markdown(f"[📥 Download Model Manually](https://drive.google.com/uc?export=download&id={file_id})")
+        st.stop()  # Stop execution if the model can't be downloaded
 
 # Load trained model
 model = load_model(output)
@@ -48,8 +57,8 @@ def overlay_heatmap(img, heatmap):
     return superimposed_img
 
 # Streamlit UI
-st.set_page_config(page_title="AI X-ray Heart Health Scanner", layout="centered")
-st.title("🩺 AI-Powered X-ray Heart Health Scanner")
+st.set_page_config(page_title="AI X-ray Health Scanner", layout="centered")
+st.title("🩺 AI-Powered X-ray Health Scanner")
 st.write("### Upload Your X-ray to Get Instant Results")
 st.image("xray.jpeg", use_column_width=True)
 
@@ -82,7 +91,7 @@ if uploaded_file is not None:
     # Generate health report
     if result == "Healthy":
         report_text = (
-            "AI X-ray Heart Health Scanner Report\n"
+            "AI X-ray Health Scanner Report\n"
             "----------------------------------------\n"
             "🩺 **Diagnosis: Healthy**\n"
             "✅ Your heart is in great condition!\n"
@@ -92,7 +101,7 @@ if uploaded_file is not None:
         )
     else:
         report_text = (
-            "AI X-ray Heart Health Scanner Report\n"
+            "AI X-ray Health Scanner Report\n"
             "----------------------------------------\n"
             "🩺 **Diagnosis: At Risk**\n"
             "⚠️ Your X-ray indicates possible concerns with heart health.\n"
@@ -115,7 +124,7 @@ if uploaded_file is not None:
     # Doctor's Advice
     st.subheader("🩺 Doctor's Advice")
     if result == "Healthy":
-        st.success("✔ Maintain a balanced diet, regular exercise, and routine checkups for optimal heart health.")
+        st.success("✔ Maintain a balanced diet, regular exercise, and routine checkups for optimal health.")
     else:
         st.error("⚠️ Please consult a cardiologist for further examination. Early detection leads to better outcomes!")
     
