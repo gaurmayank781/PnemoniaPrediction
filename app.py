@@ -80,7 +80,7 @@ if uploaded_file is not None:
         result = "At Risk" if prediction > 0.5 else "Healthy"
     
     st.subheader(f"🧑‍⚕️ **Result: {result}**")
-    st.write(f"### 🔢 Confidence Level: {confidence}%")
+    st.write(f"### 🔢 Confidence Level: {confidence:.2f}%")
     
     # Confidence animation
     progress_bar = st.progress(0)
