@@ -3,4 +3,5 @@ pandas
 tensorflow
 streamlit
 opencv-python-headless
+matplotlib
 
