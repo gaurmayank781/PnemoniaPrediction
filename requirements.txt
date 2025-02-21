@@ -4,4 +4,4 @@ tensorflow
 streamlit
 opencv-python-headless
 matplotlib
-
+gdown
