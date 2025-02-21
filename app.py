@@ -60,7 +60,7 @@ def overlay_heatmap(img, heatmap):
 st.set_page_config(page_title="AI X-ray Health Scanner", layout="centered")
 st.title("🩺 AI-Powered X-ray Health Scanner")
 st.write("### Upload Your X-ray to Get Instant Results")
-st.image("xray.jpeg", use_column_width=True)
+st.image("xray.jpeg", use_container_width=True)
 
 uploaded_file = st.file_uploader("Browse File", type=["jpg", "png", "jpeg"])
 
@@ -68,7 +68,7 @@ if uploaded_file is not None:
     file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
     image = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
     
-    st.image(image, caption="Uploaded X-ray", use_column_width=True)
+    st.image(image, caption="Uploaded X-ray", use_container_width=True)
     st.write("**Scan Status:** Upload Complete ✅")
     
     # Show AI Processing animation
@@ -119,7 +119,7 @@ if uploaded_file is not None:
             time.sleep(2)
             heatmap = get_gradcam(model, processed_img, "block5_conv3")
             superimposed_img = overlay_heatmap(image, heatmap)
-            st.image(superimposed_img, caption="AI Heatmap Analysis", use_column_width=True)
+            st.image(superimposed_img, caption="AI Heatmap Analysis", use_container_width=True)
     
     # Doctor's Advice
     st.subheader("🩺 Doctor's Advice")
